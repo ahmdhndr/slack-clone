@@ -11,16 +11,77 @@ import { Separator } from '@/components/ui/separator';
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { AuthFlow } from '../types';
-import { FaGithub } from 'react-icons/fa';
+// import { FaGithub } from 'react-icons/fa';
+import { useAuthActions } from '@convex-dev/auth/react';
+// import { TriangleAlert } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 interface SignUpCardProps {
   setState: (state: AuthFlow) => void;
 }
 
 const SignUpCard = ({ setState }: SignUpCardProps) => {
+  const { signIn } = useAuthActions();
+
+  const [fullName, setFullname] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
   const [confirmPassword, setConfirmPassword] = React.useState<string>('');
+  // const [error, setError] = React.useState<string>('');
+  const [pending, setPending] = React.useState<boolean>(false);
+
+  const onSubmitCredentialSignup = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+
+    if (confirmPassword !== password) {
+      // setError('Password do not match!');
+      toast({
+        title: 'Password do not match!',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setPending(true);
+    signIn('password', { fullName, email, password, flow: 'signUp' })
+      .catch(() => {
+        // setError('Invalid email or password!');
+        toast({
+          title: 'Invalid email or password!',
+          variant: 'destructive',
+        });
+      })
+      .finally(() => {
+        setPending(false);
+      });
+  };
+
+  const handleSignUpProvider = (value: 'github' | 'google') => {
+    setPending(true);
+    signIn(value).finally(() => {
+      setPending(false);
+    });
+  };
+
+  const onChangeFullname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // setError('');
+    setFullname(e.target.value);
+  };
+
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // setError('');
+    setEmail(e.target.value);
+  };
+
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // setError('');
+    setPassword(e.target.value);
+  };
+
+  const onChangeConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // setError('');
+    setConfirmPassword(e.target.value);
+  };
 
   return (
     <Card className='w-full h-full p-8 bg-bone-white'>
@@ -30,37 +91,71 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
           Use your email or another service to continue
         </CardDescription>
       </CardHeader>
+      {/* {!!error && (
+        <div className='bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6'>
+          <TriangleAlert className='size-4' />
+          <p>{error}</p>
+        </div>
+      )} */}
       <CardContent className='space-y-5 px-0 pb-0'>
-        <form action='#' className='space-y-2.5'>
-          <Input
-            disabled={false}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder='Email'
-            type='email'
-            required
-          />
-          <Input
-            disabled={false}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder='Password'
-            type='password'
-            required
-          />
-          <Input
-            disabled={false}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder='Confirm Password'
-            type='password'
-            required
-          />
+        <form onSubmit={onSubmitCredentialSignup} className='space-y-2.5'>
+          <div>
+            <label htmlFor='' className='text-muted-foreground'>
+              Full Name
+            </label>
+            <Input
+              disabled={pending}
+              value={fullName}
+              onChange={onChangeFullname}
+              placeholder='Full name'
+              type='text'
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor='' className='text-muted-foreground'>
+              Email
+            </label>
+            <Input
+              disabled={pending}
+              value={email}
+              onChange={onChangeEmail}
+              placeholder='Email'
+              type='email'
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor='' className='text-muted-foreground'>
+              Password
+            </label>
+            <Input
+              disabled={pending}
+              value={password}
+              onChange={onChangePassword}
+              placeholder='Password'
+              type='password'
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor='' className='text-muted-foreground'>
+              Confirm Password
+            </label>
+            <Input
+              disabled={pending}
+              value={confirmPassword}
+              onChange={onChangeConfirmPassword}
+              placeholder='Confirm Password'
+              type='password'
+              required
+            />
+          </div>
           <Button
             type='submit'
             className='w-full bg-light-green hover:bg-light-green/80'
             size='lg'
-            disabled={false}
+            disabled={pending}
           >
             Sign Up
           </Button>
@@ -68,8 +163,8 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
         <Separator />
         <div className='flex flex-col gap-2.5'>
           <Button
-            disabled={false}
-            onClick={() => {}}
+            disabled={pending}
+            onClick={() => handleSignUpProvider('github')}
             variant='outline'
             size='lg'
             className='w-full relative'
@@ -77,16 +172,16 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
             <FcGoogle className='size-5 absolute top-2.4 left-2.5' />
             Continue with Google
           </Button>
-          <Button
-            disabled={false}
-            onClick={() => {}}
+          {/* <Button
+            disabled={pending}
+            onClick={() => handleSignUpProvider('github')}
             variant='outline'
             size='lg'
             className='w-full relative'
           >
             <FaGithub className='size-5 absolute top-2.4 left-2.5' />
             Continue with Github
-          </Button>
+          </Button> */}
         </div>
         <p className='text-xs text-muted-foreground'>
           Already have an account?{' '}
