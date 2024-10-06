@@ -11,10 +11,10 @@ import { Input } from '@/components/ui/input';
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { AuthFlow } from '../types';
-// import { FaGithub } from 'react-icons/fa';
+import { FaGithub } from 'react-icons/fa';
 import { useAuthActions } from '@convex-dev/auth/react';
+import { toast } from 'sonner';
 // import { TriangleAlert } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
 
 interface SignInCardProps {
   setState: (state: AuthFlow) => void;
@@ -57,10 +57,7 @@ const SignInCard = ({
     signIn('password', { email, password, flow: 'signIn' })
       .catch(() => {
         // setError('Invalid email or password!');
-        toast({
-          title: 'Invalid email or password!',
-          variant: 'destructive',
-        });
+        toast.error('Invalid Email or Password!');
       })
       .finally(() => {
         setPending(false);
@@ -101,10 +98,11 @@ const SignInCard = ({
       <CardContent className='space-y-5 px-0 pb-0'>
         <form onSubmit={onSubmitCredentialSignin} className='space-y-2.5'>
           <div>
-            <label htmlFor='' className='text-muted-foreground'>
+            <label htmlFor='email' className='text-muted-foreground'>
               Email
             </label>
             <Input
+              id='email'
               disabled={pending}
               value={email}
               onChange={onChangeEmail}
@@ -115,7 +113,7 @@ const SignInCard = ({
           </div>
           <div>
             <div className='flex items-center justify-between'>
-              <label htmlFor='' className='text-muted-foreground'>
+              <label htmlFor='password' className='text-muted-foreground'>
                 Password
               </label>
               {/* {handlePasswordReset ? (
@@ -130,6 +128,7 @@ const SignInCard = ({
               ) : null} */}
             </div>
             <Input
+              id='password'
               disabled={pending}
               value={password}
               onChange={onChangePassword}
@@ -168,7 +167,7 @@ const SignInCard = ({
             <FcGoogle className='size-5 absolute top-2.4 left-2.5' />
             Continue with Google
           </Button>
-          {/* <Button
+          <Button
             disabled={pending}
             onClick={() => handleSignInProvider('github')}
             variant='outline'
@@ -177,7 +176,7 @@ const SignInCard = ({
           >
             <FaGithub className='size-5 absolute top-2.4 left-2.5' />
             Continue with Github
-          </Button> */}
+          </Button>
         </div>
         <p className='text-xs text-muted-foreground'>
           Don&apos;t have an account?{' '}

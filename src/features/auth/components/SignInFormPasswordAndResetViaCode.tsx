@@ -1,6 +1,5 @@
 import { ResetPasswordWithEmailCode } from './ResetPasswordWithEmailCode';
 import { SignInWithPassword } from './SignInWithPassword';
-import { Toaster } from '@/components/ui/toaster';
 import { useState } from 'react';
 
 /**
@@ -28,7 +27,6 @@ export function SignInFormPasswordAndResetViaCode() {
           handleCancel={() => setStep('signIn')}
         />
       )}
-      <Toaster />
     </div>
   );
 }

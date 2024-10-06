@@ -4,7 +4,6 @@ import React from 'react';
 import { AuthFlow } from '../types';
 import SignInCard from './sign-in-card';
 import SignUpCard from './sign-up-card';
-import { Toaster } from '@/components/ui/toaster';
 
 export const AuthScreen = () => {
   const [state, setState] = React.useState<AuthFlow>('signIn');
@@ -28,7 +27,6 @@ export const AuthScreen = () => {
           <div>Check Code</div>
         )}
       </div>
-      <Toaster />
     </div>
   );
 };

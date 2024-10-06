@@ -11,10 +11,10 @@ import { Separator } from '@/components/ui/separator';
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { AuthFlow } from '../types';
-// import { FaGithub } from 'react-icons/fa';
+import { FaGithub } from 'react-icons/fa';
 import { useAuthActions } from '@convex-dev/auth/react';
 // import { TriangleAlert } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 interface SignUpCardProps {
   setState: (state: AuthFlow) => void;
@@ -35,10 +35,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
 
     if (confirmPassword !== password) {
       // setError('Password do not match!');
-      toast({
-        title: 'Password do not match!',
-        variant: 'destructive',
-      });
+      toast.error('Password do not match!');
       return;
     }
 
@@ -46,10 +43,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
     signIn('password', { fullName, email, password, flow: 'signUp' })
       .catch(() => {
         // setError('Invalid email or password!');
-        toast({
-          title: 'Invalid email or password!',
-          variant: 'destructive',
-        });
+        toast.error('Invalid Email or Password!');
       })
       .finally(() => {
         setPending(false);
@@ -100,10 +94,11 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
       <CardContent className='space-y-5 px-0 pb-0'>
         <form onSubmit={onSubmitCredentialSignup} className='space-y-2.5'>
           <div>
-            <label htmlFor='' className='text-muted-foreground'>
+            <label htmlFor='fullname' className='text-muted-foreground'>
               Full Name
             </label>
             <Input
+              id='fullname'
               disabled={pending}
               value={fullName}
               onChange={onChangeFullname}
@@ -113,10 +108,11 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
             />
           </div>
           <div>
-            <label htmlFor='' className='text-muted-foreground'>
+            <label htmlFor='email' className='text-muted-foreground'>
               Email
             </label>
             <Input
+              id='email'
               disabled={pending}
               value={email}
               onChange={onChangeEmail}
@@ -126,10 +122,11 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
             />
           </div>
           <div>
-            <label htmlFor='' className='text-muted-foreground'>
+            <label htmlFor='password' className='text-muted-foreground'>
               Password
             </label>
             <Input
+              id='password'
               disabled={pending}
               value={password}
               onChange={onChangePassword}
@@ -139,10 +136,11 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
             />
           </div>
           <div>
-            <label htmlFor='' className='text-muted-foreground'>
+            <label htmlFor='confirm-password' className='text-muted-foreground'>
               Confirm Password
             </label>
             <Input
+              id='confirm-password'
               disabled={pending}
               value={confirmPassword}
               onChange={onChangeConfirmPassword}
@@ -172,7 +170,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
             <FcGoogle className='size-5 absolute top-2.4 left-2.5' />
             Continue with Google
           </Button>
-          {/* <Button
+          <Button
             disabled={pending}
             onClick={() => handleSignUpProvider('github')}
             variant='outline'
@@ -181,7 +179,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
           >
             <FaGithub className='size-5 absolute top-2.4 left-2.5' />
             Continue with Github
-          </Button> */}
+          </Button>
         </div>
         <p className='text-xs text-muted-foreground'>
           Already have an account?{' '}
