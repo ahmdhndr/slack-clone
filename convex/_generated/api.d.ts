@@ -18,6 +18,7 @@ import type {
 import type * as CustomPassword from "../CustomPassword.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
+import type * as members from "../members.js";
 import type * as otp_ResendOtp from "../otp/ResendOtp.js";
 import type * as otp_VerificationCodeEmail from "../otp/VerificationCodeEmail.js";
 import type * as passwordReset_PasswordResetEmail from "../passwordReset/PasswordResetEmail.js";
@@ -37,6 +38,7 @@ declare const fullApi: ApiFromModules<{
   CustomPassword: typeof CustomPassword;
   auth: typeof auth;
   http: typeof http;
+  members: typeof members;
   "otp/ResendOtp": typeof otp_ResendOtp;
   "otp/VerificationCodeEmail": typeof otp_VerificationCodeEmail;
   "passwordReset/PasswordResetEmail": typeof passwordReset_PasswordResetEmail;
