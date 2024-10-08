@@ -12,6 +12,7 @@ import { useGetWorkspaces } from '@/features/workspaces/api/use-get-workspaces';
 import { useCreateWorkspaceModal } from '@/features/workspaces/store/use-create-workspace-modal';
 import { Loader, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 const WorkspaceSwitcher = () => {
   const router = useRouter();
@@ -30,14 +31,14 @@ const WorkspaceSwitcher = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <div className='size-9 flex items-center justify-center relative rounded-md bg-bone-white hover:bg-bone-white/80 text-midnight-green font-semibold text-xl'>
+      <DropdownMenuTrigger asChild>
+        <Button className='size-9 flex items-center justify-center relative rounded-md bg-bone-white hover:bg-bone-white/80 text-midnight-green font-semibold text-xl'>
           {workspaceLoading ? (
             <Loader className='size-5 animate-spin shrink-0' />
           ) : (
             workspace?.name.charAt(0).toUpperCase()
           )}
-        </div>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-64' side='bottom' align='start'>
         <DropdownMenuItem

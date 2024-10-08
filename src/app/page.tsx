@@ -1,11 +1,10 @@
 'use client';
 import { AuthScreen } from '@/features/auth/components/auth-screen';
-import UserButton from '@/features/auth/components/user-button';
-import { useCreateWorkspaceModal } from '@/features/workspaces/store/use-create-workspace-modal';
 import { useGetWorkspaces } from '@/features/workspaces/api/use-get-workspaces';
-import { Authenticated, Unauthenticated } from 'convex/react';
-import React from 'react';
+import { useCreateWorkspaceModal } from '@/features/workspaces/store/use-create-workspace-modal';
+import { Unauthenticated } from 'convex/react';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 
 export default function Home() {
   const [open, setOpen] = useCreateWorkspaceModal();
@@ -28,9 +27,6 @@ export default function Home() {
       <Unauthenticated>
         <AuthScreen />
       </Unauthenticated>
-      <Authenticated>
-        <UserButton />
-      </Authenticated>
     </>
   );
 }
